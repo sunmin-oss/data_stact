@@ -5,7 +5,12 @@
 using namespace std;
 
 void print_map(const vector<vector<vector< int > > > &map, int x, int y, int z, int start_x, int start_y, int start_z, int end_x, int end_y, int end_z);
-
+struct road_init
+        {
+            int x; // 層
+            int y; // 高
+            int z; // 寬
+        };
 int main()
 {
     int x = 0, y = 0, z = 0;
@@ -46,13 +51,8 @@ int main()
         int start[3] = {start_x - 1, start_y, start_z};
         int end[3] = {end_x - 1, end_y, end_z};
         int now[3] = {start_x - 1, start_y, start_z}; // 層 高 寬
-        struct road_init
-        {
-            int x; // 層
-            int y; // 高
-            int z; // 寬
-        };
-        vector<road_init> road;
+        
+        vector< road_init > road;
         int road_count = 0;
         cout << "\nstart:" << start[0] << " " << start[1] << " " << start[2] << endl;
         cout << "end:" << end[0] << " " << end[1] << " " << end[2] << endl;
@@ -68,32 +68,56 @@ int main()
             else if(now[2]+1 < z && map[now[0]][now[1]][now[2]+1] == 0)// 向右
             {
                 now[2]++;
-                road.push_back( { now[0], now[1], now[2] } );
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else if(now[0]+1 < x && map[now[0]+1][now[1]][now[2]] == 0)// 上樓
             {
                 now[0]++;
-                road.push_back({now[0], now[1], now[2]});
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else if(now[1]+1 < y && map[now[0]][now[1]+1][now[2]] == 0)// 向前
             {
                 now[1]++;
-                road.push_back({now[0], now[1], now[2]});
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else if(now[2]-1 >= 0 && map[now[0]][now[1]][now[2]-1] == 0)// 向左
             {
                 now[2]--;
-                road.push_back({now[0], now[1], now[2]});
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else if(now[0]-1 >= 0 && map[now[0]-1][now[1]][now[2]] == 0)// 下樓
             {
                 now[0]--;
-                road.push_back({now[0], now[1], now[2]});
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else if(now[1]-1 >= 0 && map[now[0]][now[1]-1][now[2]] == 0)// 向後
             {
                 now[1]--;
-                road.push_back({now[0], now[1], now[2]});
+                road_init road_temp;
+                road_temp.x = now[0];
+                road_temp.y = now[1];
+                road_temp.z = now[2];
+                road.push_back( road_temp );
             }
             else
             {
@@ -116,7 +140,7 @@ int main()
 }
 
 // 印出地圖的函式
-void print_map(const vector<vector<vector<int>>> &map, int x, int y, int z, int start_x, int start_y, int start_z, int end_x, int end_y, int end_z)
+void print_map(const vector<vector<vector< int > > > &map, int x, int y, int z, int start_x, int start_y, int start_z, int end_x, int end_y, int end_z)
 {
     cout << "start: " << start_x << " " << start_y << " " << start_z << endl;
     cout << "end: " << end_x << " " << end_y << " " << end_z << endl;
