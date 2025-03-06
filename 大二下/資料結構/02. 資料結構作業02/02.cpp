@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void print_map(const vector<vector<vector<int>>> &map, int x, int y, int z, int start_x, int start_y, int start_z, int end_x, int end_y, int end_z);
+void print_map(const vector<vector<vector< int > > > &map, int x, int y, int z, int start_x, int start_y, int start_z, int end_x, int end_y, int end_z);
 
 int main()
 {
@@ -18,7 +18,7 @@ int main()
         {
             break;
         }
-        vector<vector<vector<int>>> map(x, vector<vector<int>>(y, vector<int>(z))); // 三維陣列
+        vector<vector<vector< int > > > map(x, vector<vector< int > >(y, vector<int>(z))); // 三維陣列
         for (int i = 0; i < x; i++)                                                 // 讀取地圖
         {
             for (int j = 0; j < y; j++)
@@ -57,7 +57,60 @@ int main()
         cout << "\nstart:" << start[0] << " " << start[1] << " " << start[2] << endl;
         cout << "end:" << end[0] << " " << end[1] << " " << end[2] << endl;
         cout << "now:" << now[0] << " " << now[1] << " " << now[2] << endl;
-        /* 搜尋 */
+        bool is_end = false;
+        while(true)
+        {
+            if(now[0] == end[0] && now[1] == end[1] && now[2] == end[2])
+            {
+                is_end = true;
+                break;
+            }
+            else if(now[2]+1 < z && map[now[0]][now[1]][now[2]+1] == 0)// 向右
+            {
+                now[2]++;
+                road.push_back( { now[0], now[1], now[2] } );
+            }
+            else if(now[0]+1 < x && map[now[0]+1][now[1]][now[2]] == 0)// 上樓
+            {
+                now[0]++;
+                road.push_back({now[0], now[1], now[2]});
+            }
+            else if(now[1]+1 < y && map[now[0]][now[1]+1][now[2]] == 0)// 向前
+            {
+                now[1]++;
+                road.push_back({now[0], now[1], now[2]});
+            }
+            else if(now[2]-1 >= 0 && map[now[0]][now[1]][now[2]-1] == 0)// 向左
+            {
+                now[2]--;
+                road.push_back({now[0], now[1], now[2]});
+            }
+            else if(now[0]-1 >= 0 && map[now[0]-1][now[1]][now[2]] == 0)// 下樓
+            {
+                now[0]--;
+                road.push_back({now[0], now[1], now[2]});
+            }
+            else if(now[1]-1 >= 0 && map[now[0]][now[1]-1][now[2]] == 0)// 向後
+            {
+                now[1]--;
+                road.push_back({now[0], now[1], now[2]});
+            }
+            else
+            {
+                if(road.size() == 0)
+                {
+                    cout << "no road" << endl;
+                    break;
+                }
+                now[0] = road[road.size()-1].x;
+                now[1] = road[road.size()-1].y;
+                now[2] = road[road.size()-1].z;
+                road.pop_back();
+            }
+            print_map(map, x, y, z, start_x, start_y, start_z, end_x, end_y, end_z);
+            
+        }
+
         print_map(map, x, y, z, start_x, start_y, start_z, end_x, end_y, end_z);
     }
 }
